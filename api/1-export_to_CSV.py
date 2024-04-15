@@ -38,6 +38,9 @@ def export_to_csv(employee_id):
             # Get the JSON data from the response
             todos = response.json()
 
+            # Sort tasks by completion status
+            todos.sort(key=lambda x: x["completed"])
+
             # Create a CSV file with the employee ID as the filename
             filename = f"{employee_id}.csv"
             with open(filename, mode='w', newline='') as file:
