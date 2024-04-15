@@ -56,7 +56,7 @@ def export_to_csv(employee_id):
                 for task in todos:
                     task_completed_status = str(task["completed"]).lower()
                     writer.writerow([employee_id,
-                                     employee_name,
+                                     employee_name.split(" ")[0],
                                      task_completed_status,
                                      task["title"]])
 
