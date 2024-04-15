@@ -1,7 +1,9 @@
 #!/usr/bin/python3
 
 
-"""Write a Python script that, using this REST API, for a given employee ID, returns information about his/her TODO list progress."""
+"""Write a Python script that, using this REST API,
+for a given employee ID, returns information about
+his/her TODO list progress."""
 
 
 import sys
@@ -29,13 +31,15 @@ def get_employee_todo_progress(employee_id):
         employee_name = todos[0]["title"].split(" ")[0]
 
         # Print the employee TODO list progress
-        print(f"Employee {employee_name} is done with tasks({num_completed_tasks}/{total_tasks}):")
+        print(f"Employee {employee_name} is done with
+              tasks({num_completed_tasks}/{total_tasks}): ")
 
         # Print the titles of completed tasks
         for task in reversed(completed_tasks):
             print(f"\t {task['title']}")
     else:
         print(f"Error: {response.status_code}")
+
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
