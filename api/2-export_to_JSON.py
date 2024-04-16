@@ -1,52 +1,43 @@
 #!/usr/bin/python3
 
 
-"""Export to JSON"""
+"""task:2 extend your Python script to export data in the JSON format"""
 
 
 import json
+import requests
 import sys
-import urllib.request
 
 
-def export_to_json(employee_id):
-    # API endpoint URL
-    url = f"https://jsonplaceholder.typicode.com/users/{employee_id}/todos"
+def hell_api(user_id):
+    url_users = 'https://jsonplaceholder.typicode.com/users/' + user_id
 
-    # Send GET request to the API
-    with urllib.request.urlopen(url) as response:
-        # Check if the request was successful
-        if response.status == 200:
-            # Get the JSON data from the response
-            todos = json.loads(response.read().decode())
+    response = requests.get(url_users)
+    if (response.ok):
+        jData = json.loads(response.content)
+        EMPLOYEE_NAME = jData["username"]
+    else:
+        response.raise_for_status()
 
-            # Get the employee name
-            employee_name = todos[0]["title"].split(" ")[0]
+    url_todos = "https://jsonplaceholder.typicode.com/todos"
+    query = {'userId': user_id}
 
-            # Create a dictionary to store the tasks
-            tasks_dict = {
-                str(employee_id): [
-                    {
-                        "task": task["title"],
-                        "completed": task["completed"],
-                        "username": employee_name
-                    } for task in todos
-                ]
-            }
+    response = requests.get(url_todos, params=query)
+    if (response.ok):
+        jData = json.loads(response.content)
 
-            # Create a JSON file with the employee ID as the filename
-            filename = f"{employee_id}.json"
-            with open(filename, mode='w') as file:
-                json.dump(tasks_dict, file)
+        tasks = []
+        for task in jData:
+            tasks.append({
+                "task": task.get("title"), "completed": task.get("completed"),
+                "username": EMPLOYEE_NAME
+            })
 
-            print(f"Data exported to {filename}")
-        else:
-            print(f"Error: {response.status}")
+        with open("{}.json".format(user_id), "w") as json_file:
+            json.dump({user_id: tasks}, json_file)
+    else:
+        response.raise_for_status()
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python script.py <employee_id>")
-    else:
-        employee_id = int(sys.argv[1])
-        export_to_json(employee_id)
+    hell_api(sys.argv[1])
