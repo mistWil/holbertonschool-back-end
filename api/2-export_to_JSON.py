@@ -4,9 +4,9 @@
 """Export to JSON"""
 
 
-import sys
-import urllib.request
 import json
+import urllib.request
+import sys
 
 
 def export_to_json(employee_id):

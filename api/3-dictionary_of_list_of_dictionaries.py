@@ -4,8 +4,8 @@
 """Dictionary of list of dictionaries"""
 
 
-import urllib.request
 import json
+import urllib.request
 
 
 def export_to_json():
