@@ -55,7 +55,7 @@ def export_to_json():
             with open(filename, mode='w') as file:
                 json.dump(all_tasks, file)
 
-            print(f"Data exported to {filename}")
+            #print(f"Data exported to {filename}")
         else:
             print(f"Error: {response.status}")
 

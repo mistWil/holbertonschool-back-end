@@ -5,8 +5,8 @@
 
 
 import json
-import urllib.request
 import sys
+import urllib.request
 
 
 def export_to_json(employee_id):
