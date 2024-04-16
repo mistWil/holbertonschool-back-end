@@ -41,26 +41,27 @@ def export_to_csv(employee_id):
             # Sort tasks by completion status
             todos.sort(key=lambda x: x["completed"])
 
-            # Create a CSV file with the employee ID as the filename
-            filename = f"{employee_id}.csv"
-            with open(filename, mode='w', newline='') as file:
-                writer = csv.writer(file)
+            all_tasks = []
 
-                # Write the header row
-                writer.writerow(["USER_ID",
-                                 "USERNAME",
-                                 "TASK_COMPLETED_STATUS",
-                                 "TASK_TITLE"])
+            # Create a list of lists with the required data
+            for task in todos:
+                task_completed_status = str(task["completed"]).lower()
+                task_data = [employee_id,
+                             employee_name.split(" ")[0],
+                             task_completed_status,
+                             task["title"]]
+                all_tasks.append(task_data)
 
-                # Write each task as a row in the CSV file
-                for task in todos:
-                    task_completed_status = str(task["completed"]).lower()
-                    writer.writerow([employee_id,
-                                     employee_name.split(" ")[0],
-                                     task_completed_status,
-                                     task["title"]])
+            # Write the data to a CSV file
+            with open(f"{sys.argv[1]}.csv", 'w', encoding='utf8') as f:
+                csv_list = csv.writer(f, quoting=csv.QUOTE_ALL)
+                csv_list.writerow(["USER_ID",
+                                   "USERNAME",
+                                   "TASK_COMPLETED_STATUS",
+                                   "TASK_TITLE"])
+                csv_list.writerows(all_tasks)
 
-            print(f"Data exported to {filename}")
+            print(f"Data exported to {sys.argv[1]}.csv")
         else:
             print(f"Error: {response.status_code}")
     else:
